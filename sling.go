@@ -15,7 +15,7 @@ import (
 
 const (
 	contentType     = "Content-Type"
-	jsonContentType = "application/json"
+	jsonContentType = "json"
 	formContentType = "application/x-www-form-urlencoded"
 )
 
