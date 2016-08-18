@@ -218,7 +218,10 @@ func (s *Sling) QueryStruct(queryStruct interface{}) *Sling {
 func (s *Sling) BodyJSON(bodyJSON interface{}) *Sling {
 	if bodyJSON != nil {
 		s.bodyJSON = bodyJSON
-		s.Set(contentType, jsonContentType)
+
+		if !strings.Contains(s.header.Get(contentType), jsonContentType) {
+			s.Set(contentType, jsonContentType)
+		}
 	}
 	return s
 }
@@ -304,7 +307,7 @@ func addQueryStructs(reqURL *url.URL, queryStructs []interface{}) error {
 // getRequestBody returns the io.Reader which should be used as the body
 // of new Requests.
 func (s *Sling) getRequestBody() (body io.Reader, err error) {
-	if s.bodyJSON != nil && s.header.Get(contentType) == jsonContentType {
+	if s.bodyJSON != nil && strings.Contains(s.header.Get(contentType), jsonContentType) {
 		body, err = encodeBodyJSON(s.bodyJSON)
 		if err != nil {
 			return nil, err
